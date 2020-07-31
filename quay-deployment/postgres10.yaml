@@ -1,0 +1,41 @@
+# Source: https://access.redhat.com/documentation/en-us/red_hat_quay/3/html-single/deploy_red_hat_quay_on_openshift/index#appendix_a_red_hat_quay_on_openshift_configuration_files
+# TODO: To use this, a postgres extension must be installed as the root user
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+spec:
+  ports:
+  - port: 5432
+  selector:
+    app: postgres
+  clusterIP: None
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: registry.access.redhat.com/rhscl/postgresql-10-rhel7:1-35
+        imagePullPolicy: "IfNotPresent"
+        ports:
+          - containerPort: 5432
+        env:
+        - name: POSTGRESQL_USER
+          value: "quay" 
+        - name: POSTGRESQL_DATABASE
+          value: "quay"
+        - name: POSTGRESQL_PASSWORD
+          value: "password"

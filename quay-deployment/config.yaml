@@ -1,0 +1,68 @@
+# Uncomment to use a real mysql db running in docker
+# DB_URI: mysql+pymysql://root:password@192.168.59.103/quay
+# DB_CONNECTION_ARGS:
+#   threadlocals: true
+#   autorollback: true
+
+DB_URI: "mysql+pymysql://quay:quaypassword@mysql57/quay"
+
+PREFERRED_URL_SCHEME: https
+
+SERVER_HOSTNAME: my-projectquay-instance.com
+
+SECRET_KEY: a36c9d7d-25a9-30f4-a586-3d2f8dc40a83
+
+REGISTRY_TITLE: Load and Performance Testing (Quay)
+REGISTRY_TITLE_SHORT: Quay
+
+AUTHENTICATION_TYPE: Database
+
+FEATURE_MAILING: false
+
+AVATAR_KIND: gravatar
+
+#TESTING: false
+#DEBUGGING: false
+#DEBUG: false
+#USE_CDN: true
+
+# Build logs
+BUILDLOGS_REDIS:
+  host: redis
+
+# User events
+USER_EVENTS_REDIS:
+  host: redis
+
+FEATURE_SUPER_USERS: true
+SUPER_USERS:
+- admin
+
+SIGNING_ENGINE: gpg2
+
+GPG2_PRIVATE_KEY_NAME: EEB32221
+GPG2_PRIVATE_KEY_FILENAME: signing-private.gpg
+GPG2_PUBLIC_KEY_FILENAME: signing-public.gpg
+
+FEATURE_ACI_CONVERSION: true
+
+SETUP_COMPLETE: true
+
+#INSTANCE_SERVICE_KEY_KID_LOCATION: 'conf/stack/quay.kid'
+#INSTANCE_SERVICE_KEY_LOCATION: 'conf/stack/quay.pem'
+
+PROMETHEUS_AGGREGATOR_URL: 'localhost:9090'
+
+FEATURE_APP_REGISTRY: true
+
+FEATURE_SIGNING: true
+
+FEATURE_USER_METADATA: true
+FEATURE_USER_LOG_ACCESS: true
+
+V3_UPGRADE_MODE: complete
+
+DATABASE_SECRET_KEY: "mys3cretk3y"
+
+PROMETHEUS_PUSHGATEWAY_URL: "http://localhost:9091"
+FEATURE_REPORT_PROMETHEUS_STATS: true

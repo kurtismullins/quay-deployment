@@ -1,0 +1,43 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quay-enterprise-app
+  labels:
+    quay-enterprise-component: app
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      quay-enterprise-component: app
+  template:
+    metadata:
+      labels:
+        quay-enterprise-component: app
+    spec:
+      volumes:
+        - name: configvolume
+          secret:
+            secretName: quay-enterprise-config-secret
+      containers:
+      - name: quay-enterprise-app
+        # image: quay.io/redhat/quay:v3.3.0
+        image: quay.io/kmullins/quay:PROJQUAY-917
+        ports:
+        - containerPort: 8443
+        - containerPort: 9090
+        - containerPort: 9091
+        volumeMounts:
+        - name: configvolume
+          readOnly: false
+          mountPath: /conf/stack
+        env:
+          - name: QE_K8S_NAMESPACE
+            value: kmullins
+            # valueFrom:
+            #   fieldRef:
+            #     fieldPath: metadata.namespace  # Use config secret within same namespace
+      imagePullSecrets:
+        - name: redhat-pull-secret
+      # nodeSelector:
+      #   quay: app

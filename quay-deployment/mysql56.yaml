@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql56
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: mysql56
+  clusterIP: None
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql56
+spec:
+  selector:
+    matchLabels:
+      app: mysql56
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql56
+    spec:
+      nodeSelector:
+        quay: db
+      containers:
+      - image: "openshift/mysql-56-centos7"
+        name: mysql56
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: rootpassword
+        - name: MYSQL_USER
+          value: quay
+        - name: MYSQL_DATABASE
+          value: quay
+        - name: MYSQL_PASSWORD
+          value: quaypassword 
+        ports:
+        - containerPort: 3306
+          name: mysql
+      nodeSelector:
+        quay: db

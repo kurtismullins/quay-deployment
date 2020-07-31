@@ -1,0 +1,12 @@
+---
+# Route to allow external access
+apiVersion: v1
+kind: Route
+metadata:
+  name: quay
+spec:
+  to:
+    kind: Service
+    name: quay
+  tls:
+    termination: passthrough

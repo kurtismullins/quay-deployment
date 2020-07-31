@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  labels:
+    quay-enterprise-component: redis
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      quay-enterprise-component: redis
+  template:
+    metadata:
+      labels:
+        quay-enterprise-component: redis
+    spec:
+      containers:
+      - name: redis-master
+        image: registry.access.redhat.com/rhscl/redis-32-rhel7
+        imagePullPolicy: "IfNotPresent"
+        ports:
+        - containerPort: 6379
+    # nodeSelector:
+    #   quay: app
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  labels:
+    quay-enterprise-component: redis
+spec:
+  ports:
+    - port: 6379
+  selector:
+    quay-enterprise-component: redis
